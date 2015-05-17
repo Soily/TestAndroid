@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.apache.http.protocol.HTTP;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -41,9 +43,20 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void StartIntent(View view){
+    public void WebIntent(View view){
         Uri webpage = Uri.parse("http://developer.android.com");
         Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
         startActivity(webIntent);
+    }
+
+    public void MailIntent(View view){
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    // The intent does not have a URI, so declare the "text/plain" MIME type
+        emailIntent.setType(HTTP.PLAIN_TEXT_TYPE);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"kai@jhd.de"}); // recipients
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Push Button");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "We pushed the PUSH-Button!!");
+        //emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://path/to/email/attachment"));
+        startActivity(emailIntent);
     }
 }
