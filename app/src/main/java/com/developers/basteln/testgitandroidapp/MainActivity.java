@@ -1,6 +1,7 @@
 package com.developers.basteln.testgitandroidapp;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.apache.http.protocol.HTTP;
+
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -51,12 +54,19 @@ public class MainActivity extends ActionBarActivity {
 
     public void MailIntent(View view){
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
-    // The intent does not have a URI, so declare the "text/plain" MIME type
+
+        // The intent does not have a URI, so declare the "text/plain" MIME type
         emailIntent.setType(HTTP.PLAIN_TEXT_TYPE);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"kai@jhd.de"}); // recipients
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Push Button");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "We pushed the PUSH-Button!!");
         //emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://path/to/email/attachment"));
+
+        PackageManager packageManager = getPackageManager();
+        List activities = packageManager.queryIntentActivities(emailIntent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        boolean isIntentSafe = activities.size() > 0;
+
         startActivity(emailIntent);
     }
 }
